@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useLocalStorage } from "@/app/Common/CustomHooks/useLocalStorage";
 import { Avatar } from "antd";
 import {
-  EditOutlined,
   FileExcelOutlined,
   FileImageOutlined,
   FileOutlined,
@@ -13,13 +13,15 @@ import Link from "next/link";
 import Widget from "@/app/Common/Widget";
 import { useFetchWithRefresh } from "@/app/Common/CustomHooks/useFetchWithRefresh";
 import moment from "moment";
-import { useTranslations } from "@/i18n/TranslationsProvider";
 import CustomList from "@/app/Common/CustomList";
 
 // NextCloud
 function Files({ app }) {
+  const [isFavorite, setIsFavorite] = useLocalStorage(
+    "files_is_favorite",
+    false,
+  );
   const [searchTerm, setSearchTerm] = useState("");
-  const t = useTranslations("Files");
   const [page, setPage] = useState(1);
 
   const {
@@ -28,7 +30,8 @@ function Files({ app }) {
     error,
     onRefresh,
   } = useFetchWithRefresh(searchTerm ? "/ocs/search" : "/ocs/activities", {
-    term: searchTerm,
+    term: searchTerm || undefined,
+    is_favorite: !searchTerm && isFavorite ? true : undefined,
   });
 
   const onSearch = (value) => {
@@ -49,6 +52,8 @@ function Files({ app }) {
   return (
     <Widget
       app={app}
+      favorite={isFavorite}
+      setFavorite={setIsFavorite}
       setSearch={onSearch}
       error={error}
       onRefresh={onRefresh}
@@ -60,6 +65,7 @@ function Files({ app }) {
         dataSource={paginatedFiles}
         loading={loading}
         className="widget-list"
+        search={searchTerm}
         renderItem={(item) => {
           const { Icon, backgroundColor } = fileVisualByExtension(item?.name);
 
@@ -83,12 +89,8 @@ function Files({ app }) {
                   </Link>
                 }
                 description={
-                  item?.datetime && (
-                    <span>
-                      {t("lastModified")}:{" "}
-                      {moment(item?.datetime).format("DD-MM-YYYY, HH:mm")}
-                    </span>
-                  )
+                  item?.datetime &&
+                  moment(item?.datetime).format("DD-MM-YYYY, HH:mm")
                 }
               />
             </CustomList.Item>

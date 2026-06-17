@@ -89,6 +89,10 @@ body {
   padding: 20px;
 }
 
+.layout-iframe {
+  padding: 0;
+}
+
 .homepage-layout {
   padding: 0px 20px;
 }
@@ -126,6 +130,99 @@ body {
   margin-bottom: 20px;
 }
 
+/* DRAGGABLE DASHBOARD GRID */
+/* -------------------------------------------------- */
+.dashboard-grid {
+  margin-top: 8px;
+}
+
+.dashboard-item {
+  height: 100%;
+}
+
+/* Cards fill their grid cell; body scrolls if the content is taller. */
+.dashboard-item > .ant-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dashboard-item > .ant-card > .ant-card-body {
+  flex: 1;
+  overflow: auto;
+}
+
+/* The only drag point: a grip at the far left of the card header, centered. */
+.widget-drag-handle {
+  position: absolute;
+  left: 14px;
+  top: 28px;
+  transform: translateY(-50%);
+  z-index: 20;
+  cursor: move;
+  opacity: 0.35;
+}
+
+.widget-drag-handle:hover {
+  opacity: 0.9;
+}
+
+/* Make room for the grip so it doesn't sit under the title. */
+.dashboard-item .ant-card-head-title {
+  padding-left: 24px;
+}
+
+.react-grid-item.react-grid-placeholder {
+  background: var(--header-background);
+  opacity: 0.18;
+  border-radius: 8px;
+}
+
+/* "Add widget" tile in the last grid slot. */
+.add-widget-card {
+  border: 2px dashed var(--card-border-color) !important;
+  background: transparent !important;
+}
+
+.add-widget-card > .ant-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Replace react-resizable's default corner arrow with a subtle grip that hugs
+   the card's rounded bottom-right corner. */
+.dashboard-item > .react-resizable-handle {
+  background: none;
+  padding: 0;
+}
+
+.dashboard-item > .react-resizable-handle-se {
+  right: 4px;
+  bottom: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+.dashboard-item > .react-resizable-handle-se::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--card-text-color);
+  border-bottom: 2px solid var(--card-text-color);
+  border-bottom-right-radius: 7px;
+  opacity: 0.2;
+  transition: opacity 0.15s;
+}
+
+.dashboard-item:hover > .react-resizable-handle-se::after {
+  opacity: 0.5;
+}
+
 footer {
   text-align: center;
 }
@@ -151,8 +248,15 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--color-border-default);
+  padding: 7px 0;
+}
+
+/* Compact, single-line rows: shrink the row avatars */
+.custom-list-item-meta-avatar .ant-avatar {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 13px;
 }
 
 .custom-list-item:last-child {
@@ -177,7 +281,7 @@ footer {
 }
 
 .custom-list-item-meta-title {
-  margin-bottom: 4px;
+  margin-bottom: 0;
   color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   line-height: 1.5715;
@@ -240,6 +344,12 @@ footer {
   animation: custom-list-spin 1s linear infinite;
 }
 
+.admin-portal {
+  width: 100%;
+  height: 100%;
+  margin-top: 24;
+}
+
 @keyframes custom-list-spin {
   0% {
     transform: rotate(0deg);
@@ -253,10 +363,6 @@ footer {
 @media (prefers-color-scheme: dark) {
   .custom-list {
     color: rgba(255, 255, 255, 0.85);
-  }
-
-  .custom-list-item {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .custom-list-item-meta-title {
@@ -349,6 +455,51 @@ footer {
   border: none;
 }
 
+/* AI DRAWER */
+/* -------------------------------------------------- */
+.ai-drawer-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ai-drawer-body--empty {
+  justify-content: center;
+}
+
+.ai-drawer-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 16px;
+  animation: ai-fade-in 0.35s ease;
+}
+
+@keyframes ai-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-drawer-divider {
+  margin: 0 0 12px;
+}
+
+.ai-drawer-input {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  transition: all 0.35s ease;
+}
+
+.ai-drawer-send {
+  flex-shrink: 0;
+}
+
 /* AI */
 /* -------------------------------------------------- */
 .position-timeline {
@@ -422,7 +573,7 @@ footer {
 }
 
 .widget-list {
-  min-height: 230px;
+  min-height: 0;
 }
 
 .sheets-org-select {
@@ -508,6 +659,12 @@ footer {
 
 .ant-card-body {
   color: var(--card-text-color) !important;
+  padding: 14px 16px !important;
+}
+
+/* Compact widgets: tighten the dividers around search / pagination */
+.ant-card-body .ant-divider-horizontal {
+  margin: 10px 0;
 }
 
 /* List overrides - ensure text inherits card colors */
@@ -780,6 +937,12 @@ footer {
 
 .ant-dropdown-menu-item:hover {
   background: var(--menu-item-hover-bg) !important;
+  color: var(--menu-item-selected-text) !important;
+}
+
+.ant-dropdown-menu-item:hover a,
+.ant-dropdown-menu-item:hover .anticon {
+  color: var(--menu-item-selected-text) !important;
 }
 
 .ant-dropdown-menu-item-danger {

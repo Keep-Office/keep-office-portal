@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useLocalStorage } from "../../../Common/CustomHooks/useLocalStorage";
 import { Avatar } from "antd";
-import { EditOutlined, FileTextOutlined } from "@ant-design/icons";
+import { FileTextOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import Widget from "../../../Common/Widget";
 import { useFetchWithRefresh } from "../../../Common/CustomHooks/useFetchWithRefresh";
@@ -10,7 +11,10 @@ import CustomList from "../../../Common/CustomList";
 import moment from "moment";
 // Docs
 function Documents({ app }) {
-  // const [favorite, setFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useLocalStorage(
+    "docs_is_favorite",
+    false,
+  );
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const t = useTranslations("Documents");
@@ -20,7 +24,7 @@ function Documents({ app }) {
     error,
     onRefresh,
   } = useFetchWithRefresh("/docs/documents", {
-    // favorite,
+    is_favorite: isFavorite || undefined,
     title: search,
     page,
     page_size: 3,
@@ -28,8 +32,8 @@ function Documents({ app }) {
   return (
     <Widget
       app={app}
-      // favorite={favorite}
-      // setFavorite={setFavorite}
+      favorite={isFavorite}
+      setFavorite={setIsFavorite}
       search={search}
       setSearch={setSearch}
       error={error}
@@ -42,6 +46,7 @@ function Documents({ app }) {
         className="widget-list"
         dataSource={docs?.results || []}
         loading={loading}
+        search={search}
         renderItem={(item) => (
           <CustomList.Item key={item?.id}>
             <CustomList.Item.Meta
@@ -55,7 +60,9 @@ function Documents({ app }) {
                   {item?.title || t("untitled")}
                 </Link>
               }
-              description={`${t("lastModified")}: ${moment.utc(item.updated_at).format("DD-MM-YYYY, HH:mm")}`}
+              description={moment
+                .utc(item.updated_at)
+                .format("DD-MM-YYYY, HH:mm")}
             />
           </CustomList.Item>
         )}

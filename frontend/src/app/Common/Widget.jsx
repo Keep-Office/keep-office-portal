@@ -4,6 +4,8 @@ import {
   StarOutlined,
   ReloadOutlined,
   ArrowRightOutlined,
+  SettingOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -13,10 +15,12 @@ import {
   Input,
   Row,
   Col,
-  Pagination,
+  Dropdown,
+  Space,
 } from "antd";
 import React, { useState } from "react";
 import { useTranslations } from "../../i18n/TranslationsProvider";
+import { useDashboard } from "../Components/Context/DashboardContext";
 import Link from "next/link";
 const { Search } = Input;
 
@@ -29,41 +33,68 @@ function Widget({
   setSearch = undefined,
   placeholder = "",
   onRefresh = undefined,
-  page = 1,
-  setPage = undefined,
-  total = 0,
   app,
+  isAdmin = false,
 }) {
   const t = useTranslations("Widget");
+  const dashboard = useDashboard();
   const [value, setValue] = useState("");
   const { iframe, url, title, id } = app || {};
-  const iconLink =
+  const iconLink = (title) =>
     iframe && id ? (
-      <Link href={`/${id}`}>
-        <ArrowRightOutlined />
-      </Link>
+      <Link href={`/${id}`}>{title}</Link>
     ) : (
       <Link href={url || ""} rel="noopener noreferrer" target="_blank">
-        <ArrowRightOutlined />
+        {title}
       </Link>
     );
 
+  const items = [
+    isAdmin && {
+      label: (
+        <Link
+          href={id === "ocs" ? `${url}/settings/admin` : `${url}/admin` || ""}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <ArrowRightOutlined /> {title} {t("admin")}
+        </Link>
+      ),
+      key: "0",
+    },
+    onRefresh && {
+      label: (
+        <Link onClick={onRefresh} href="#">
+          <ReloadOutlined /> {t("refresh")}
+        </Link>
+      ),
+      key: "1",
+    },
+    dashboard &&
+      id && {
+        label: (
+          <span onClick={() => dashboard.removeWidget(id)}>
+            <DeleteOutlined /> {t("remove")}
+          </span>
+        ),
+        key: "remove",
+        danger: true,
+      },
+  ];
+
   return (
     <Card
-      title={
-        <span>
-          {title} {iconLink}
-        </span>
-      }
+      title={<span>{iconLink(title)}</span>}
       loading={loading}
       extra={
-        onRefresh && (
-          <Button
-            onClick={onRefresh}
-            type="text"
-            icon={<ReloadOutlined />}
-            title={t("refresh")}
-          />
+        items.filter(Boolean).length > 0 && (
+          <Dropdown menu={{ items: items.filter(Boolean) }} trigger={["click"]}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                <SettingOutlined />
+              </Space>
+            </a>
+          </Dropdown>
         )
       }
     >
@@ -99,21 +130,6 @@ function Widget({
           </Row>
 
           {children}
-
-          {page && setPage && (
-            <React.Fragment>
-              <Divider />
-              <Pagination
-                pageSize={3}
-                defaultCurrent={page}
-                current={page}
-                onChange={(page) => setPage(page)}
-                total={total}
-                align="end"
-                pageSizeOptions={[5]}
-              />
-            </React.Fragment>
-          )}
         </React.Fragment>
       )}
     </Card>

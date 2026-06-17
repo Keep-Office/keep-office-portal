@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import DynamicIcon from "./DynamicIcon";
 import Documents from "../Components/AppWidgets/Documents/Documents";
@@ -24,7 +25,16 @@ const NAV_LAYOUT = [
   { type: "app", appId: "matrix", labelKey: "chat", icon: "MessageOutlined" },
   { type: "app", appId: "grist", labelKey: "tables", icon: "TableOutlined" },
   { type: "app", appId: "docs", labelKey: "wiki", icon: "ReadOutlined" },
+  {
+    type: "app",
+    appId: "calendar",
+    labelKey: "calendar",
+    icon: "CalendarOutlined",
+  },
 ];
+
+// Backend services to keep out of the top bar entirely.
+const HIDDEN_NAV = new Set(["task"]);
 
 // Children of the Office dropdown. Each opens NextCloud (the "ocs" service base
 // URL) at the given path in a new tab.
@@ -112,7 +122,9 @@ export const menuItem = (applications, t) => {
   // backend exposes silently disappears from the bar. These keep their
   // backend-provided title and icon.
   const remaining = apps
-    .filter((app) => app.title && !placed.has(app.id))
+    .filter(
+      (app) => app.title && !placed.has(app.id) && !HIDDEN_NAV.has(app.id),
+    )
     .map((app) => ({
       key: app.id,
       label: appLink(app, app.title),
@@ -130,23 +142,28 @@ export const menuItem = (applications, t) => {
   ];
 };
 
-export const availableWidgetComponents = ({ applications, is_admin }) => {
-  const componentMap = {
-    docs: Documents,
-    drive: Drive,
-    ocs: Files,
-    grist: Sheets,
-    conversation: Conversations,
-    meet: Meet,
-    calendar: Calendar,
-  };
-  return applications
-    ?.filter((app) => app.enabled)
-    ?.map((app) => {
-      const Component = componentMap[app?.id];
-      return Component ? (
-        <Component key={app?.id} app={app} isAdmin={is_admin} />
-      ) : null;
-    })
-    .filter(Boolean);
+const WIDGET_COMPONENTS = {
+  docs: Documents,
+  drive: Drive,
+  ocs: Files,
+  grist: Sheets,
+  conversation: Conversations,
+  meet: Meet,
+  calendar: Calendar,
+};
+
+// All dashboard widgets the current config can show, as { id, title, node }.
+// The dashboard decides which are visible and lets the user add/remove them.
+export const dashboardWidgets = (appConfig) => {
+  const { applications, is_admin } = appConfig || {};
+  return (applications || [])
+    .filter((app) => app.enabled && WIDGET_COMPONENTS[app.id])
+    .map((app) => ({
+      id: app.id,
+      title: app.title || app.id,
+      node: React.createElement(WIDGET_COMPONENTS[app.id], {
+        app,
+        isAdmin: is_admin,
+      }),
+    }));
 };

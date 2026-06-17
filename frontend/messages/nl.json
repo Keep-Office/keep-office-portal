@@ -1,7 +1,7 @@
 {
   "HomePage": {
     "title": "Keep Office",
-    "welcome": "Welkom bij Keep Office",
+    "welcome": "Welkom bij jouw bureau",
     "logout": "Uitloggen"
   },
   "Header": {
@@ -35,6 +35,7 @@
   },
   "Meet": {
     "title": "Videoconferentie",
+    "startMeeting": "Direct vergaderen",
     "pincode": "Pincode",
     "accessLevel": "Toegangs niveau",
     "public": "Openbaar",
@@ -48,10 +49,18 @@
   },
   "Widget": {
     "refresh": "Vernieuwen",
-    "search": "zoeken"
+    "search": "zoeken",
+    "admin": "Beheerdersportaal",
+    "remove": "Widget verwijderen"
   },
   "List": {
-    "empty": "Geen items gevonden"
+    "empty": "Geen items gevonden",
+    "emptyData": "Nog geen gegevens beschikbaar. Voeg gegevens toe in de applicatie om ze hier te zien."
+  },
+  "Dashboard": {
+    "noApps": "Nog geen applicaties geconfigureerd. Neem contact op met uw beheerder om applicaties in te schakelen.",
+    "addWidget": "Widget toevoegen",
+    "allAdded": "Alle widgets toegevoegd"
   },
   "Search": {
     "placeholder": "zoeken...",
@@ -72,7 +81,22 @@
     "helpdesk": "Helpdesk"
   },
   "Navigation": {
-    "home": "Home"
+    "home": "Home",
+    "admin": "Beheer",
+    "office": "Office",
+    "files": "Bestanden",
+    "contacts": "Contacten",
+    "projects": "Projecten",
+    "meet": "Meet",
+    "chat": "Chat",
+    "tables": "Tabellen",
+    "wiki": "Wiki",
+    "calendar": "Agenda",
+    "tasks": "Taken"
+  },
+  "AdminPortal": {
+    "title": "Beheerdersportaal",
+    "description": "Beheer en configureer de applicaties in uw suite."
   },
   "ExternalApp": {
     "openNewTab": "Open in nieuw tabblad",
@@ -82,5 +106,13 @@
   "Theme": {
     "light": "Licht Mode",
     "dark": "Donker Mode"
+  },
+  "Chat": {
+    "title": "Chat",
+    "connectPrompt": "Verbind om je ongelezen kanalen te zien.",
+    "connect": "Verbind met chat",
+    "noUnread": "Geen ongelezen berichten",
+    "untitled": "(naamloos)",
+    "remove": "Widget verwijderen"
   }
 }

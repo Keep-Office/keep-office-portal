@@ -35,6 +35,7 @@
   },
   "Meet": {
     "title": "Video Conference",
+    "startMeeting": "Start instant meeting",
     "pincode": "Pin code",
     "accessLevel": "Access level",
     "public": "Public",
@@ -47,10 +48,19 @@
     "updated": "Updated"
   },
   "Widget": {
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "search": "search",
+    "admin": "Admin Portal",
+    "remove": "Remove widget"
   },
   "List": {
-    "empty": "No items found"
+    "empty": "No items found",
+    "emptyData": "No data available yet. Add data in the application to see it here."
+  },
+  "Dashboard": {
+    "noApps": "No applications configured yet. Contact your administrator to enable applications.",
+    "addWidget": "Add widget",
+    "allAdded": "All widgets added"
   },
   "Search": {
     "placeholder": "Search...",
@@ -71,7 +81,22 @@
     "helpdesk": "Help desk"
   },
   "Navigation": {
-    "home": "Home"
+    "home": "Home",
+    "admin": "Admin",
+    "office": "Office",
+    "files": "Files",
+    "contacts": "Contacts",
+    "projects": "Projects",
+    "meet": "Meet",
+    "chat": "Chat",
+    "tables": "Tables",
+    "wiki": "Wiki",
+    "calendar": "Calendar",
+    "tasks": "Tasks"
+  },
+  "AdminPortal": {
+    "title": "Admin Portal",
+    "description": "Manage and configure the applications in your suite."
   },
   "ExternalApp": {
     "openNewTab": "Open in new tab",
@@ -81,5 +106,13 @@
   "Theme": {
     "light": "Light Mode",
     "dark": "Dark Mode"
+  },
+  "Chat": {
+    "title": "Chat",
+    "connectPrompt": "Connect to see your unread channels.",
+    "connect": "Connect to chat",
+    "noUnread": "No unread messages",
+    "untitled": "(unnamed room)",
+    "remove": "Remove widget"
   }
 }

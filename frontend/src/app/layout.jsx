@@ -12,7 +12,7 @@ import Loading from "./Common/Loading";
 
 export const metadata = {
   title: "Keep Office",
-  description: "Keep Office — your self-hosted digital workplace",
+  description: "Open BSW bureaublad",
 };
 
 export default async function RootLayout({ children }) {

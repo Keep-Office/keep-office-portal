@@ -10,6 +10,7 @@ const CustomList = ({
   dataSource = [],
   loading = false,
   renderItem,
+  search = "",
   ...restProps
 }) => {
   const t = useTranslations("List");
@@ -32,7 +33,7 @@ const CustomList = ({
         return renderedItem;
       })}
       {dataSource?.length === 0 && !loading && (
-        <Empty description={t("empty")} />
+        <Empty description={search ? t("empty") : t("emptyData")} />
       )}
     </div>
   );
@@ -55,36 +56,35 @@ const CustomListItemMeta = ({ avatar, title, description, className = "" }) => {
   return (
     <Flex
       className={`custom-list-item-meta ${className}`}
-      align="flex-start"
-      gap="middle"
+      align="center"
+      gap="small"
       style={{ flex: 1, minWidth: 0, overflow: "hidden" }}
     >
       {avatar && <Flex className="custom-list-item-meta-avatar">{avatar}</Flex>}
-      <Flex
-        vertical
-        gap={4}
-        style={{ flex: 1, minWidth: 0, overflow: "hidden" }}
-      >
-        {title && (
-          <Text
-            strong
-            className="custom-list-item-meta-title"
-            style={{
-              display: "block",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {title}
-          </Text>
-        )}
-        {description && (
-          <Text type="secondary" className="custom-list-item-meta-description ">
-            {description}
-          </Text>
-        )}
-      </Flex>
+      {title && (
+        <Text
+          strong
+          className="custom-list-item-meta-title"
+          style={{
+            flex: 1,
+            minWidth: 0,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {title}
+        </Text>
+      )}
+      {description && (
+        <Text
+          type="secondary"
+          className="custom-list-item-meta-description"
+          style={{ flexShrink: 0, whiteSpace: "nowrap" }}
+        >
+          {description}
+        </Text>
+      )}
     </Flex>
   );
 };
