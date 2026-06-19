@@ -4,10 +4,22 @@
 // counts for encrypted rooms; raw /sync does, and the counts already include
 // thread notifications.)
 //
-// Hosts are deployment-specific (the demo): Synapse homeserver, Element web
-// (for room deep-links), and the Keycloak IdP id registered in Synapse.
-export const MATRIX_HOMESERVER = "https://matrix.mijnbureau.ritzademo.com";
-export const MATRIX_ELEMENT = "https://element.mijnbureau.ritzademo.com";
+// Hosts are derived from the current domain at runtime so the portal is
+// deployment-agnostic: the portal runs at bridge.<domain>, and Synapse/Element
+// at matrix.<domain> / element.<domain>. (The Keycloak IdP id registered in
+// Synapse is a fixed alias, not a hostname.)
+const KO_BASE_DOMAIN =
+  typeof window !== "undefined"
+    ? window.location.hostname.replace(/^[^.]+\./, "") // strip the "bridge." label
+    : "";
+const KO_PROTO =
+  typeof window !== "undefined" ? window.location.protocol : "https:";
+export const MATRIX_HOMESERVER = KO_BASE_DOMAIN
+  ? `${KO_PROTO}//matrix.${KO_BASE_DOMAIN}`
+  : "";
+export const MATRIX_ELEMENT = KO_BASE_DOMAIN
+  ? `${KO_PROTO}//element.${KO_BASE_DOMAIN}`
+  : "";
 export const MATRIX_IDP = "oidc-mijnbureau";
 
 const SESSION_KEY = "matrix_session";
