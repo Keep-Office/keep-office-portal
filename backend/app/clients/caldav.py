@@ -14,6 +14,10 @@ class CaldavClient:
     def __init__(self, base_url: str, token: str) -> None:
         self.base_url = base_url
         self.token = token
+        # Portal convention: the Meet host mirrors the Nextcloud host
+        # (nextcloud.<domain> -> meet.<domain>). An event is "joinable" when its
+        # location is a URL on that host.
+        self.meet_base = base_url.replace("://nextcloud.", "://meet.", 1)
 
         self.client = DAVClient(url=f"{base_url}/remote.php/dav", auth=HTTPBearerAuth(token))
 
@@ -44,11 +48,18 @@ class CaldavClient:
                     # Skip events that have already finished (incl. earlier today).
                     if self._is_past(end_value, now):
                         continue
+                    location = component.get("location")
+                    meet_url = None
+                    if location is not None:
+                        loc = str(location).strip()
+                        if self.meet_base and loc.startswith(self.meet_base):
+                            meet_url = loc
                     events_today.append(
                         Calendar(
                             title=str(summary),
                             start=start_value,
                             end=end_value,
+                            meet_url=meet_url,
                         )
                     )
 

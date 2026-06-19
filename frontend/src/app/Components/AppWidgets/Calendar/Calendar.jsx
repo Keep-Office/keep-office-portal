@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useLocalStorage } from "@/app/Common/CustomHooks/useLocalStorage";
-import { Avatar } from "antd";
-import { CalendarOutlined } from "@ant-design/icons";
+import { Avatar, Button } from "antd";
+import { CalendarOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import Widget from "@/app/Common/Widget";
 import { useFetchWithRefresh } from "@/app/Common/CustomHooks/useFetchWithRefresh";
 import moment from "moment";
@@ -62,6 +62,19 @@ function Calendar({ app }) {
                 moment(item?.start).format("DD-MM-YYYY, HH:mm")
               }
             />
+            {item?.meet_url && (
+              <Button
+                type="link"
+                size="small"
+                icon={<VideoCameraOutlined />}
+                href={item.meet_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Join
+              </Button>
+            )}
           </CustomList.Item>
         )}
       />
