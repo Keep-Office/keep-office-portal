@@ -1,7 +1,7 @@
 {
   "HomePage": {
-    "title": "Keep Office",
-    "welcome": "Welcome to Keep Office",
+    "title": "Open Suite",
+    "welcome": "Welcome to Open Suite",
     "logout": "Logout"
   },
   "Header": {
@@ -77,7 +77,7 @@
     "loginButton": "Log in"
   },
   "Footer": {
-    "copyright": "Keep Office ©",
+    "copyright": "Open Suite ©",
     "helpdesk": "Help desk"
   },
   "Navigation": {
