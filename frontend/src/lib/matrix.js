@@ -42,7 +42,7 @@ export async function exchangeLoginToken(loginToken) {
     body: JSON.stringify({
       type: "m.login.token",
       token: loginToken,
-      initial_device_display_name: "Keep Office portal",
+      initial_device_display_name: "Open Suite portal",
     }),
   });
   if (!res.ok) throw new Error(`Matrix login failed (${res.status})`);

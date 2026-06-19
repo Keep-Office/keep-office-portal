@@ -11,7 +11,7 @@ import { Suspense } from "react";
 import Loading from "./Common/Loading";
 
 export const metadata = {
-  title: "Keep Office",
+  title: "Open Suite",
   description: "Open BSW bureaublad",
 };
 

@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Keep Office",
+    "title": "Open Suite",
     "welcome": "Welkom bij jouw bureau",
     "logout": "Uitloggen"
   },
@@ -77,7 +77,7 @@
     "loginButton": "Inloggen"
   },
   "Footer": {
-    "copyright": "Keep Office ©",
+    "copyright": "Open Suite ©",
     "helpdesk": "Helpdesk"
   },
   "Navigation": {
