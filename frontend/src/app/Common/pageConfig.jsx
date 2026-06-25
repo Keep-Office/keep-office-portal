@@ -36,14 +36,28 @@ const NAV_LAYOUT = [
 // Backend services to keep out of the top bar entirely.
 const HIDDEN_NAV = new Set(["task"]);
 
-// Children of the Office dropdown. Each opens NextCloud (the "ocs" service base
-// URL) at the given path in a new tab.
+// Children of the Office dropdown. Do not link to Nextcloud's `/apps/office`
+// overview: it briefly renders "No office suite is deployed" while its async
+// checks run, which is a poor first impression. The creation actions are in
+// Files anyway, so document-type entries land users there.
 const OFFICE_LINKS = [
   {
-    id: "office",
-    labelKey: "office",
+    id: "documents",
+    labelKey: "documents",
     icon: "FileTextOutlined",
-    path: "/apps/office/",
+    path: "/apps/files/files",
+  },
+  {
+    id: "spreadsheets",
+    labelKey: "spreadsheets",
+    icon: "TableOutlined",
+    path: "/apps/files/files",
+  },
+  {
+    id: "presentations",
+    labelKey: "presentations",
+    icon: "FilePptOutlined",
+    path: "/apps/files/files",
   },
   {
     id: "files",
