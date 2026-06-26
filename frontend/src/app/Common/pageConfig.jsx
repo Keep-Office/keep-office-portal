@@ -21,6 +21,22 @@ const NAV_LAYOUT = [
     labelKey: "office",
     icon: "AppstoreOutlined",
   },
+  {
+    type: "nextcloud",
+    appId: "ocs",
+    id: "contacts",
+    labelKey: "contacts",
+    icon: "ContactsOutlined",
+    path: "/apps/contacts",
+  },
+  {
+    type: "nextcloud",
+    appId: "ocs",
+    id: "projects",
+    labelKey: "projects",
+    icon: "ProjectOutlined",
+    path: "/apps/deck/",
+  },
   { type: "app", appId: "meet", labelKey: "meet", icon: "VideoCameraOutlined" },
   { type: "app", appId: "matrix", labelKey: "chat", icon: "MessageOutlined" },
   { type: "app", appId: "grist", labelKey: "tables", icon: "TableOutlined" },
@@ -36,46 +52,38 @@ const NAV_LAYOUT = [
 // Backend services to keep out of the top bar entirely.
 const HIDDEN_NAV = new Set(["task"]);
 
-// Children of the Office dropdown. Do not link to Nextcloud's `/apps/office`
-// overview: it briefly renders "No office suite is deployed" while its async
-// checks run, which is a poor first impression. The creation actions are in
-// Files anyway, so document-type entries land users there.
+// Children of the Office dropdown. Document-type entries use the clean Office
+// section URLs served by the shared header sidecar.
 const OFFICE_LINKS = [
   {
     id: "documents",
     labelKey: "documents",
     icon: "FileTextOutlined",
-    path: "/apps/files/files",
+    path: "/apps/office/documents",
   },
   {
     id: "spreadsheets",
     labelKey: "spreadsheets",
     icon: "TableOutlined",
-    path: "/apps/files/files",
+    path: "/apps/office/spreadsheets",
   },
   {
     id: "presentations",
     labelKey: "presentations",
     icon: "FilePptOutlined",
-    path: "/apps/files/files",
+    path: "/apps/office/presentations",
+  },
+  {
+    id: "diagrams",
+    labelKey: "diagrams",
+    icon: "ApartmentOutlined",
+    path: "/apps/office/diagrams",
   },
   {
     id: "files",
     labelKey: "files",
     icon: "FolderOutlined",
     path: "/apps/files/files",
-  },
-  {
-    id: "contacts",
-    labelKey: "contacts",
-    icon: "ContactsOutlined",
-    path: "/apps/contacts",
-  },
-  {
-    id: "projects",
-    labelKey: "projects",
-    icon: "ProjectOutlined",
-    path: "/apps/deck/",
   },
 ];
 
@@ -122,6 +130,23 @@ export const menuItem = (applications, t) => {
           ),
           icon: <DynamicIcon name={child.icon} />,
         })),
+      };
+    }
+
+    if (entry.type === "nextcloud") {
+      const base = app.url.replace(/\/$/, "");
+      return {
+        key: `${entry.appId}:${entry.id}`,
+        label: (
+          <Link
+            href={`${base}${entry.path}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {label(t, entry.labelKey, entry.id)}
+          </Link>
+        ),
+        icon: <DynamicIcon name={entry.icon} />,
       };
     }
 
