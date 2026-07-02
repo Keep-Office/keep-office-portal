@@ -22,11 +22,15 @@ jobs:
         include:
           - image: portal-frontend
             context: ./frontend
+            file: ./frontend/Dockerfile
             target: prod
-          # Backend (portal-api) is upstream MinBZK and its uv.lock drifts from
-          # pyproject, so `uv sync --locked` fails to build from source. The
-          # deploy uses the pinned upstream API image directly, so we don't
-          # publish portal-api here. Re-add once the lockfile is reconciled.
+          # portal-api is an overlay on the pinned upstream image (its uv.lock
+          # drifts from pyproject, so a source build fails); see
+          # backend/Dockerfile.overlay.
+          - image: portal-api
+            context: ./backend
+            file: ./backend/Dockerfile.overlay
+            target: ""
     steps:
       - uses: actions/checkout@v4
 
@@ -52,6 +56,7 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
           target: ${{ matrix.target }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
