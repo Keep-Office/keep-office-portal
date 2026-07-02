@@ -1,2 +1,0 @@
-FROM ghcr.io/minbzk/bureaublad-api:v0.9.3
-COPY app/clients/caldav.py /app/app/clients/caldav.py
